@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import {getCollection} from 'astro:content';
+import Link from "../../components/Link.vue"
+import config from '../../config.js';
+
+const allPosts = (await getCollection("blog")).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout pageTitle="Blogs">
+    <ul class="list-none p-0 flex flex-col justify-start">
+        {
+            allPosts.map((post) => (
+                    <li class="flex items-center">
+                        <FormattedDate class="flex-none italic text-neutral-500" date={post.data.pubDate}/>
+                        <span>&nbsp;-&nbsp;</span>
+                        <Link href=`/blog/${post.id}/`>{post.data.title}</Link>
+                    </li>
+            ))
+        }
+    </ul>
+</BaseLayout>

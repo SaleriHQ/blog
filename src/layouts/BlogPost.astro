@@ -1,0 +1,43 @@
+---
+import type {CollectionEntry} from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Link from '../components/Link.vue'
+import Header from '../components/Header.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+
+type Props = CollectionEntry<'blog'>['data'];
+
+const {title, description, pubDate, updatedDate, heroImage, tags} = Astro.props;
+---
+
+<html lang="zh">
+<head>
+    <BaseHead title={title} description={description}/>
+</head>
+
+<body class="bg-[#f2f5f8]">
+<Header/>
+<main class="bg-[#fff] text-stone-700 text-[18px] min-h-[95vh] m-auto max-w-[65ch] text-left break-words leading-[1.5] px-4 py-2">
+    <article>
+        {heroImage && <img width="720" height="360" src={heroImage} alt=""/>}
+        <h1 class="text-[2em] mt-[0.25em]">{title}</h1>
+        <FormattedDate date={pubDate}/>
+        {updatedDate && (
+                <div class="italic text-stone-400 text-[0.8em]">
+                    最后一次修改于
+                    <FormattedDate date={updatedDate}/>
+                </div>
+        )}
+        <div class="flex flex-wrap">
+            {tags.map((tag) => (
+                    <span class="mx-[4px]">
+                    <Link class="text-[14px]" href=`/tags/${tag}`>{tag}</Link>
+                </span>
+            ))}
+        </div>
+        <hr class="my-2">
+        <slot/>
+    </article>
+</main>
+</body>
+</html>

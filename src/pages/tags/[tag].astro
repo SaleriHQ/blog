@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {type CollectionEntry, getCollection} from 'astro:content';
+import Link from "../../components/Link.vue";
+import FormattedDate from "../../components/FormattedDate.astro";
+
+export async function getStaticPaths() {
+    const allPosts = await getCollection('blog');
+    const uniqueTags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
+
+    return uniqueTags.map((tag) => {
+        const filteredPosts = allPosts.filter((post) => post.data.tags.includes(tag));
+        return {
+            params: {tag},
+            props: {posts: filteredPosts},
+        };
+    });
+}
+
+const {tag} = Astro.params;
+const {posts} = Astro.props;
+const filteredPosts = posts.filter((post) => post.data.tags.includes(tag));
+---
+<BaseLayout pageTitle={tag}>
+    <p>与 {tag} 有关的文章有</p>
+    <ul class="list-none p-0 flex flex-col justify-start">
+        {filteredPosts.map((post) =>
+                <li class="flex items-center">
+                    <FormattedDate class="flex-none italic text-neutral-500" date={post.data.pubDate}/>
+                    <span>&nbsp;-&nbsp;</span>
+                    <Link class="text-[16px]" href=`/blog/${post.id}`>{post.data.title}</Link>
+                </li>
+        )}
+    </ul>
+</BaseLayout>
