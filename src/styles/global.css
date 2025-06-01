@@ -17,14 +17,22 @@
 
 * {
     box-sizing: border-box;
-    font-family: 'Smiley Sans Oblique';
-    font-weight: 400;
+    /*font-family: 'Smiley Sans Oblique';*/
+    font-family: 'LXGW Bright SemiLight';
+    font-weight: 300;
 }
+
+/*.katex * {*/
+/*    font-family: 'Diphylleia', sans-serif !important;*/
+/*    font-weight: 300;*/
+/*    letter-spacing: 1px;*/
+/*}*/
 
 /*
 BlogPost 页面样式
 */
 code {
+    margin: 0 0.1rem !important;
     padding: 2px 5px;
     background-color: oklch(95.1% 0.026 236.824);
     border-radius: 4px;
@@ -32,17 +40,46 @@ code {
 }
 
 pre {
-    padding: 1rem;
+    padding: 1rem !important;
+    letter-spacing: 0.05rem;
 }
 
 pre > code {
+    margin: 0 !important;
     all: unset;
+}
+
+pre > code {
+    counter-reset: line;
+}
+pre > code > [data-line]::before {
+    counter-increment: line;
+    content: counter(line);
+
+    /* Other styling */
+    display: inline-block;
+    width: 0.75rem;
+    margin-right: 1rem;
+    text-align: right;
+    color: gray;
+}
+
+code[data-line-numbers-max-digits="2"] > [data-line]::before {
+    width: 1.25rem;
+}
+
+code[data-line-numbers-max-digits="3"] > [data-line]::before {
+    width: 1.75rem;
+}
+
+code[data-line-numbers-max-digits="4"] > [data-line]::before {
+    width: 2.25rem;
 }
 
 blockquote {
     border-left: 5px solid #1f6dda;
     color: oklch(44.2% 0.017 285.786);
-    background: oklch(92.3% 0.003 48.717);
+    background: oklch(0.949 0 89.876);
     padding: 0 0 0 10px;
     margin: 10px 0px;
     font-style: italic;
