@@ -1,0 +1,20 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import config from "../config.js";
+
+const { pageTitle } = Astro.props;
+---
+
+<html lang="zh">
+  <head>
+    <BaseHead
+      title={pageTitle || config.SITE_TITLE}
+      description={config.SITE_DESCRIPTION}
+    />
+  </head>
+  <body class="min-h-screen bg-gray-50 pl-20 pr-20">
+    <Header />
+    <slot />
+  </body>
+</html>

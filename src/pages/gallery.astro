@@ -1,0 +1,28 @@
+---
+import fs from "fs";
+import path from "path";
+import ImageGrid from "../components/ImageGrid.astro";
+import ImageLayout from "../layouts/ImageLayout.astro";
+
+// 自动导入图片
+const imageModules = import.meta.glob(
+  "../content/gallery/*.{jpg,jpeg,png,webp,gif,avif}",
+  { eager: true, as: "url" }
+);
+
+// 读取文件修改时间（mtime）
+let images = Object.entries(imageModules).map(([filePath, src]) => {
+  const absPath = path.resolve(import.meta.dirname, filePath);
+  const stat = fs.statSync(absPath);
+  const date = stat.mtime; // 文件最后修改时间
+  const filename = decodeURIComponent(filePath.split("/").pop() ?? "");
+  return { src: String(src), alt: filename, date };
+});
+
+// 按修改时间从新到旧排序
+images.sort((a, b) => b.date - a.date);
+---
+
+<ImageLayout>
+  <ImageGrid images={images} />
+</ImageLayout>

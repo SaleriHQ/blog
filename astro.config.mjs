@@ -9,11 +9,12 @@ import tailwindcss from "@tailwindcss/vite";
 import { transformerCopyButton } from '@rehype-pretty/transformers';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import image from '@astrojs/image';
 
 // https://astro.build/config
 export default defineConfig({
     site: 'http://saleri.xyz',
-    integrations: [mdx(), sitemap(), vue()],
+    integrations: [mdx(), sitemap(), vue(), image()],
 
     markdown: {
         syntaxHighlight: false,
