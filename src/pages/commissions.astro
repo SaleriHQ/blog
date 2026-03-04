@@ -12,9 +12,15 @@ const imageModules = import.meta.glob(
 
 // 读取文件修改时间（mtime）
 let images = Object.entries(imageModules).map(([filePath, src]) => {
-  const absPath = path.resolve(import.meta.dirname, filePath);
-  const stat = fs.statSync(absPath);
-  const date = stat.mtime; // 文件最后修改时间
+  let date = new Date(); // 默认使用当前时间
+  try {
+    const absPath = path.resolve(import.meta.dirname, filePath);
+    const stat = fs.statSync(absPath);
+    date = stat.mtime; // 文件最后修改时间
+  } catch (error) {
+    // 如果文件不存在，使用当前时间
+    console.warn(`File not found: ${filePath}, using current time instead`);
+  }
   const filename = decodeURIComponent(filePath.split("/").pop() ?? "");
   return { src: String(src), alt: filename, date };
 });
