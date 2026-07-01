@@ -3,6 +3,7 @@ title: "CMS.608 Leature 2: 迭代设计"
 pubDate: "2026.3.5"
 updatedDate: "2026.3.5"
 tags: ["MIT CMS.608", "游戏设计"]
+published: false
 ---
 
 ## What is a game?

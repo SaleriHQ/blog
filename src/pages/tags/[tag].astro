@@ -6,10 +6,11 @@ import FormattedDate from "../../components/FormattedDate.astro";
 
 export async function getStaticPaths() {
     const allPosts = await getCollection('blog');
-    const uniqueTags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
+    const publishedPosts = allPosts.filter((post) => post.data.published);
+    const uniqueTags = [...new Set(publishedPosts.map((post) => post.data.tags).flat())];
 
     return uniqueTags.map((tag) => {
-        const filteredPosts = allPosts.filter((post) => post.data.tags.includes(tag));
+        const filteredPosts = publishedPosts.filter((post) => post.data.tags.includes(tag));
         return {
             params: {tag},
             props: {posts: filteredPosts},
@@ -21,6 +22,8 @@ const {tag} = Astro.params;
 const {posts} = Astro.props;
 const filteredPosts = posts.filter((post) => post.data.tags.includes(tag));
 ---
+
+
 <BaseLayout pageTitle={tag}>
     <p>与 {tag} 有关的文章有</p>
     <ul class="list-none p-0 flex flex-col justify-start">

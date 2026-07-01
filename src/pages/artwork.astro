@@ -4,9 +4,9 @@ import path from "path";
 import ImageGrid from "../components/ImageGrid.astro";
 import ImageLayout from "../layouts/ImageLayout.astro";
 
-// 自动导入图片
+// 自动导入 Artwork 目录下的图片
 const imageModules = import.meta.glob(
-  "../content/gallery/*.{jpg,jpeg,png,webp,gif,avif}",
+  "../content/artwork/*.{jpg,jpeg,png,webp,gif,avif}",
   { eager: true, as: "url" }
 );
 
@@ -14,11 +14,10 @@ const imageModules = import.meta.glob(
 let images = Object.entries(imageModules).map(([filePath, src]) => {
   let date = new Date(); // 默认使用当前时间
   try {
-    const absPath = path.resolve(import.meta.dirname, filePath);
+    const absPath = path.resolve(process.cwd(), "src/pages", filePath);
     const stat = fs.statSync(absPath);
     date = stat.mtime; // 文件最后修改时间
   } catch (error) {
-    // 如果文件不存在，使用当前时间
     console.warn(`File not found: ${filePath}, using current time instead`);
   }
   const filename = decodeURIComponent(filePath.split("/").pop() ?? "");
@@ -29,6 +28,11 @@ let images = Object.entries(imageModules).map(([filePath, src]) => {
 images.sort((a, b) => b.date.getTime() - a.date.getTime());
 ---
 
-<ImageLayout>
-  <ImageGrid images={images} />
+<ImageLayout pageTitle="Artwork - 作品图库">
+  <div class="max-w-[1200px] mx-auto py-8">
+    <h1 class="text-3xl font-bold text-neutral-800 tracking-wide mb-6 pl-4 font-light">
+      Artwork
+    </h1>
+    <ImageGrid images={images} />
+  </div>
 </ImageLayout>

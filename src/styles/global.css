@@ -17,8 +17,7 @@
 
 * {
     box-sizing: border-box;
-    /*font-family: 'Smiley Sans Oblique';*/
-    font-family: 'LXGW Bright SemiLight';
+    font-family: 'Nunito', 'HarmonyOS Sans SC', 'LXGW Bright SemiLight', sans-serif;
     font-weight: 300;
 }
 

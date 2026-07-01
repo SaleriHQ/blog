@@ -1,0 +1,66 @@
+---
+interface Props {
+  pubDate: Date;
+  images?: string[];
+}
+
+const { pubDate, images = [] } = Astro.props;
+
+// 格式化日期为 YYYY-MM-DD
+const formatDate = (date: Date) => {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
+---
+
+<div class="timeline-item group relative pl-6 pb-10 border-l-2 border-neutral-200/80 last:pb-4">
+  <!-- 时间轴小圆点 -->
+  <div class="absolute left-[-5px] top-1.5 w-2.5 h-2.5 rounded-full bg-neutral-300 border-2 border-white group-hover:bg-blue-500 transition-colors duration-200"></div>
+
+  <!-- 发布日期 -->
+  <time class="block text-sm font-semibold tracking-wider text-neutral-400 mb-2 font-mono">
+    {formatDate(pubDate)}
+  </time>
+
+  <!-- 动态文本内容 -->
+  <div class="text-neutral-800 text-[16px] leading-relaxed mb-4 markdown-body">
+    <slot />
+  </div>
+
+  <!-- 图片展示区域 -->
+  {images.length > 0 && (
+    <div class="image-area mt-3">
+      {images.length === 1 ? (
+        // 单张图片展示大图
+        <div class="single-image max-w-[80%]">
+          <img 
+            src={images[0]} 
+            alt="dynamic-image" 
+            class="zoom-image rounded-lg max-h-[350px] object-cover cursor-zoom-in border border-neutral-200/50 hover:opacity-95 transition-opacity duration-200"
+            data-src={images[0]}
+          />
+        </div>
+      ) : (
+        // 多张图片展示网格 (2张或4张使用2列，其他使用3列)
+        <div class={`grid gap-2 max-w-[90%] ${
+          images.length === 2 || images.length === 4 
+            ? 'grid-cols-2 max-w-[60ch]' 
+            : 'grid-cols-3 max-w-[65ch]'
+        }`}>
+          {images.map((src) => (
+            <div class="aspect-square overflow-hidden rounded-lg border border-neutral-200/50 bg-neutral-50">
+              <img 
+                src={src} 
+                alt="dynamic-image" 
+                class="zoom-image w-full h-full object-cover cursor-zoom-in hover:scale-105 transition-transform duration-300"
+                data-src={src}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )}
+</div>

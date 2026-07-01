@@ -4,31 +4,40 @@ import config from "../config";
 import "../styles/global.css";
 ---
 
-<header class="flex flex-row justify-between h-[5vh] max-h-[5vh] bg-[#f2f5f8] z-0">
-    <!--<img-->
-    <!--        class="mr-[10px] rounded-xl p-1"-->
-    <!--        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRJIvY1ji-03P5Lu1be3_DNSpkJFpFnNw27g&s"-->
-    <!--        alt=""-->
-    <!--/>-->
-    <div class="ml-2">𝙎𝙖𝙡𝙚𝙧𝙞</div>
-    <nav class="flex justify-between content-center">
-        <div class="flex justify-between content-center">
+<header
+    class="flex flex-row justify-between items-center h-[5vh] max-h-[5vh] bg-[#f2f5f8] z-0 px-4"
+>
+    <a
+        href="/"
+        class="text-xl font-bold tracking-wider text-neutral-800 hover:text-blue-600 transition-colors duration-200 no-underline"
+        style="font-family: 'Playwrite NZ', cursive;"
+    >
+        Saleri
+    </a>
+    <nav class="flex justify-between items-center h-full">
+        <div class="flex justify-between items-center h-full">
             <HeaderLink class="px-2 m-auto" href="/">Home</HeaderLink>
             <HeaderLink class="px-2 m-auto" href="/blog">Blog</HeaderLink>
             <HeaderLink class="px-2 m-auto" href="/tags">Tag</HeaderLink>
-            <HeaderLink class="px-2 m-auto" href="/gallery">Gallery</HeaderLink>
-            <HeaderLink class="px-2 m-auto" href="/commissions">Commissions</HeaderLink>
+            <HeaderLink class="px-2 m-auto" href="/every">Every</HeaderLink>
+            <HeaderLink class="px-2 m-auto" href="/artwork"
+                >Artwork</HeaderLink
+            >
         </div>
         <div class="bg-neutral-900 w-0.5 h-[60%] my-auto mx-2"></div>
-        <div class="flex justify-between content-center">
+        <div class="flex justify-between items-center h-full">
             <HeaderLink
-                    class="px-2 m-auto"
-                    href={config.link.bilibili}
-                    target="_blank"
+                class="px-2 m-auto"
+                href={config.link.bilibili}
+                target="_blank"
             >
                 Bilibili
             </HeaderLink>
-            <HeaderLink class="px-2 m-auto" href={config.link.github} target="_blank">
+            <HeaderLink
+                class="px-2 m-auto"
+                href={config.link.github}
+                target="_blank"
+            >
                 Github
             </HeaderLink>
         </div>

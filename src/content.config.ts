@@ -17,7 +17,19 @@ const blog = defineCollection({
 			.transform((str) => (str ? new Date(str) : undefined)),
 		tags: z.array(z.string()),
 		heroImage: z.string().optional(),
+		published: z.boolean().optional().default(false),
 	}),
 });
 
-export const collections = { blog };
+const every = defineCollection({
+	loader: glob({ base: './src/content/every', pattern: '**/*.{md,mdx}' }),
+	schema: z.object({
+		pubDate: z
+			.string()
+			.or(z.date())
+			.transform((val) => new Date(val)),
+		images: z.array(z.string()).optional(),
+	}),
+});
+
+export const collections = { blog, every };

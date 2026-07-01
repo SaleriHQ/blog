@@ -5,9 +5,9 @@ import {getCollection} from 'astro:content';
 import Link from "../../components/Link.vue"
 import config from '../../config.js';
 
-const allPosts = (await getCollection("blog")).sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const allPosts = (await getCollection("blog"))
+    .filter((post) => post.data.published)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <BaseLayout pageTitle="Blogs">

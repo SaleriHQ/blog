@@ -1,12 +1,35 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Link from '../components/Link.vue'
+import BaseLayout from "../layouts/BaseLayout.astro";
+import config from "../config.js";
+import HeaderLink from "../components/HeaderLink.astro";
 ---
 
 <BaseLayout>
-    <div class="min-h-[90vh] flex flex-col items-center justify-center">
-        <img class="my-2 w-[50%] mx-auto" src="/Saleri.png" alt=""/>
-        <h1 class="text-center text-[14px]">「 Connecting the dots 」</h1>
-        <p class="text-center text-[14px]">学习 && 摄影 && 骑行 && 游戏</p>
+    <div class="py-8 font-light">
+        <!-- Profile / Name Heading -->
+        <img class="my-2 w-[50%] mx-auto" src="/Saleri.png" alt="" />
+        <p class="text-center text-[14px]">「 Connecting the dots 」</p>
+        <!-- Intro Sentence -->
+        <p class="text-neutral-700 text-[19px] leading-relaxed mb-4">
+            Hello！我是 Saleri，一位充满好奇心的开发者与游戏玩家。
+        </p>
+        <!-- Description Paragraphs -->
+        <div class="space-y-6 text-neutral-700 leading-relaxed mb-12">
+            <p>
+                我热衷于构思奇妙的想法并让它们成为现实。我喜欢构建能帮助自己和他人提高效率的工具，并享受亲手创造的过程。
+            </p>
+            <p>
+                我撰写关于开源、编程、游戏设计笔记以及日常所学的
+                <HeaderLink href="/blog">博客</HeaderLink>。
+                <br />
+                不时地，我也会在
+                <HeaderLink href="/every">Every</HeaderLink
+                > 中记载我的个人想法和心得。
+            </p>
+            <p>
+                在编程和设计之外，我喜欢阅读、探索游戏和记录美好瞬间。如果您对我的作品感兴趣，欢迎随时查看我的
+                <HeaderLink href="/artwork">作品图库 (Artwork)</HeaderLink>。
+            </p>
+        </div>
     </div>
 </BaseLayout>
