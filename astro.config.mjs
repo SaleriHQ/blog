@@ -11,10 +11,12 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import image from '@astrojs/image';
 
+import react from '@astrojs/react';
+
 // https://astro.build/config
 export default defineConfig({
     site: 'http://saleri.xyz',
-    integrations: [mdx(), sitemap(), vue(), image()],
+    integrations: [mdx(), sitemap(), vue(), image(), react()],
 
     markdown: {
         syntaxHighlight: false,

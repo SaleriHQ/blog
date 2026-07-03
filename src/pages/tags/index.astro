@@ -7,6 +7,10 @@ const publishedPosts = allPosts.filter((post) => post.data.published);
 const tags = [...new Set(publishedPosts.map((post) => post.data.tags).flat())];
 ---
 <BaseLayout pageTitle="Tags">
+    <!-- 页面标题 -->
+    <h1 class="text-3xl font-bold text-neutral-800 tracking-wide mb-10 border-b border-neutral-200/50 pb-4 pt-10">
+      Tags
+    </h1>
     <div class="flex flex-wrap mx-auto">
         {tags.map((tag) => (
                 <p class="mx-[10px]">

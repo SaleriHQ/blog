@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import config from "../config.js";
 import HeaderLink from "../components/HeaderLink.astro";
+import BlogHeatmap from "../components/BlogHeatmap.astro";
 ---
 
 <BaseLayout>
@@ -23,12 +24,14 @@ import HeaderLink from "../components/HeaderLink.astro";
                 <HeaderLink href="/blog">Blog</HeaderLink> 中。
                 <br />
                 不时地，我也会在
-                <HeaderLink href="/every">Every</HeaderLink> 中记载我的个人想法和心得。
+                <HeaderLink href="/daily">Daily</HeaderLink> 中记载我的个人想法和心得。
             </p>
             <p>
                 在编程和学习之外，我也喜欢拍照来记录美好瞬间。如果您对我的作品感兴趣，欢迎随时查看我的
                 <HeaderLink href="/artwork">Artwork</HeaderLink>。
             </p>
         </div>
+
+        <!-- <BlogHeatmap /> -->
     </div>
 </BaseLayout>

@@ -1,0 +1,56 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import DailyCard from "../components/DailyCard.astro";
+import { getCollection, render } from "astro:content";
+
+// 获取 all posts
+const posts = await getCollection("daily");
+
+// 按发布日期从新到旧排序
+posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+// 自动导入画廊图片以便解析文件名
+const imageModules = import.meta.glob(
+  "../content/gallery/*.{jpg,jpeg,png,webp,gif,avif}",
+  { eager: true, as: "url" }
+);
+
+// 解析文件名映射
+const resolveImage = (filename: string) => {
+  const match = Object.entries(imageModules).find(([key]) =>
+    key.endsWith(filename)
+  );
+  return match ? String(match[1]) : "";
+};
+---
+
+<BaseLayout pageTitle="Daily - 个人动态">
+  <div class="py-10 max-w-[65ch] mx-auto font-light">
+    <!-- 页面标题 -->
+    <h1 class="text-3xl font-bold text-neutral-800 tracking-wide mb-10 border-b border-neutral-200/50 pb-4">
+      Daily
+    </h1>
+
+    <!-- 动态时间轴容器 -->
+    <div class="timeline-container relative pl-2">
+      {posts.length > 0 ? (
+        posts.map(async (post) => {
+          const { Content } = await render(post);
+          const resolvedImages = (post.data.images || []).map((img) =>
+            resolveImage(img)
+          ).filter(Boolean);
+
+          return (
+            <DailyCard pubDate={post.data.pubDate} images={resolvedImages}>
+              <Content />
+            </DailyCard>
+          );
+        })
+      ) : (
+        <p class="text-neutral-400 text-center py-10 font-light">
+          暂无动态，多去生活，多去记录吧。
+        </p>
+      )}
+    </div>
+  </div>
+</BaseLayout>

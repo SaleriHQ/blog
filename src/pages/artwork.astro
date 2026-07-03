@@ -1,38 +1,90 @@
 ---
+import exifr from "exifr";
 import fs from "fs";
-import path from "path";
-import ImageGrid from "../components/ImageGrid.astro";
-import ImageLayout from "../layouts/ImageLayout.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import DailyCard from "../components/DailyCard.astro";
 
 // 自动导入 Artwork 目录下的图片
 const imageModules = import.meta.glob(
   "../content/artwork/*.{jpg,jpeg,png,webp,gif,avif}",
-  { eager: true, as: "url" }
+  { eager: true, as: "url" },
 );
 
-// 读取文件修改时间（mtime）
-let images = Object.entries(imageModules).map(([filePath, src]) => {
-  let date = new Date(); // 默认使用当前时间
-  try {
-    const absPath = path.resolve(process.cwd(), "src/pages", filePath);
-    const stat = fs.statSync(absPath);
-    date = stat.mtime; // 文件最后修改时间
-  } catch (error) {
-    console.warn(`File not found: ${filePath}, using current time instead`);
-  }
-  const filename = decodeURIComponent(filePath.split("/").pop() ?? "");
-  return { src: String(src), alt: filename, date };
-});
+/** 从文件名中解析日期（匹配 YYYY-MM-DD 或 YYYY_MM_DD 格式） */
+function parseDateFromFilename(filename: string): Date | null {
+  const m = filename.match(/(\d{4})[-_](\d{2})[-_](\d{2})/);
+  if (m) return new Date(`${m[1]}-${m[2]}-${m[3]}`);
+  return null;
+}
 
-// 按修改时间从新到旧排序
+// 并发读取所有图片的 EXIF 拍摄时间
+const images = await Promise.all(
+  Object.entries(imageModules).map(async ([filePath, src]) => {
+    const filename = decodeURIComponent(filePath.split("/").pop() ?? "");
+    const absPath = new URL(filePath, import.meta.url).pathname;
+    let date: Date | null = null;
+
+    // 1️⃣ 优先：EXIF DateTimeOriginal（真实拍摄时间）
+    try {
+      const exif = await exifr.parse(absPath, [
+        "DateTimeOriginal",
+        "CreateDate",
+      ]);
+      date = exif?.DateTimeOriginal ?? exif?.CreateDate ?? null;
+    } catch {
+      // 非 JPEG/EXIF 格式（如 PNG）会走到这里，忽略即可
+    }
+
+    // 2️⃣ 次选：从文件名解析日期（无 EXIF 时的可靠来源）
+    if (!date) {
+      date = parseDateFromFilename(filename);
+    }
+
+    // 3️⃣ 兜底：文件系统 mtime
+    if (!date) {
+      try {
+        date = fs.statSync(absPath).mtime;
+      } catch {
+        date = new Date();
+      }
+    }
+
+    return { src: String(src), alt: filename, date: date ?? new Date() };
+  }),
+);
+
+// 按拍摄时间从新到旧排序
 images.sort((a, b) => b.date.getTime() - a.date.getTime());
 ---
 
-<ImageLayout pageTitle="Artwork - 作品图库">
-  <div class="max-w-[1200px] mx-auto py-8">
-    <h1 class="text-3xl font-bold text-neutral-800 tracking-wide mb-6 pl-4 font-light">
+<BaseLayout pageTitle="Artwork - 作品图库">
+  <div class="py-10 max-w-[65ch] mx-auto font-light">
+    <!-- 页面标题 -->
+    <h1
+      class="text-3xl font-bold text-neutral-800 tracking-wide mb-10 border-b border-neutral-200/50 pb-4"
+    >
       Artwork
     </h1>
-    <ImageGrid images={images} />
+
+    <!-- 动态时间轴容器 -->
+    <div class="timeline-container relative pl-2">
+      {
+        images.length > 0 ? (
+          images.map((image) => {
+            const displayName =
+              image.alt.substring(0, image.alt.lastIndexOf(".")) || image.alt;
+            return (
+              <DailyCard pubDate={image.date} images={[image.src]}>
+                <p class="text-neutral-800 font-light">{displayName}</p>
+              </DailyCard>
+            );
+          })
+        ) : (
+          <p class="text-neutral-400 text-center py-10 font-light">
+            暂无作品，多去创作，多去记录吧。
+          </p>
+        )
+      }
+    </div>
   </div>
-</ImageLayout>
+</BaseLayout>

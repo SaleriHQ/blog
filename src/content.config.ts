@@ -21,8 +21,8 @@ const blog = defineCollection({
 	}),
 });
 
-const every = defineCollection({
-	loader: glob({ base: './src/content/every', pattern: '**/*.{md,mdx}' }),
+const daily = defineCollection({
+	loader: glob({ base: './src/content/daily', pattern: '**/*.{md,mdx}' }),
 	schema: z.object({
 		pubDate: z
 			.string()
@@ -32,4 +32,4 @@ const every = defineCollection({
 	}),
 });
 
-export const collections = { blog, every };
+export const collections = { blog, daily };

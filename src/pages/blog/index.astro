@@ -11,6 +11,10 @@ const allPosts = (await getCollection("blog"))
 ---
 
 <BaseLayout pageTitle="Blogs">
+    <!-- 页面标题 -->
+    <h1 class="text-3xl font-bold text-neutral-800 tracking-wide mb-10 border-b border-neutral-200/50 pb-4 pt-10">
+      Blogs
+    </h1>
     <ul class="list-none p-0 flex flex-col justify-start">
         {
             allPosts.map((post) => (

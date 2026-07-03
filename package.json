@@ -11,18 +11,31 @@
   "dependencies": {
     "@astrojs/image": "^0.18.0",
     "@astrojs/mdx": "^4.2.6",
+    "@astrojs/react": "^6.0.1",
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.4.0",
     "@astrojs/vue": "^5.0.13",
     "@rehype-pretty/transformers": "^0.13.2",
     "@tailwindcss/vite": "^4.1.7",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
     "astro": "^5.7.13",
+    "exifr": "^7.1.3",
     "katex": "^0.16.22",
+    "react": "^19.2.7",
+    "react-activity-calendar": "^3.2.0",
+    "react-dom": "^19.2.7",
     "rehype-katex": "^7.0.1",
     "rehype-pretty-code": "^0.14.1",
     "remark-math": "^6.0.0",
     "shiki": "^3.4.2",
     "tailwindcss": "^4.1.7",
+    "vite": "^6.3.5",
     "vue": "^3.5.14"
+  },
+  "pnpm": {
+    "overrides": {
+      "vite": "^6.3.5"
+    }
   }
 }
