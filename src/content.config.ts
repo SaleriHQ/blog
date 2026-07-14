@@ -21,15 +21,5 @@ const blog = defineCollection({
 	}),
 });
 
-const daily = defineCollection({
-	loader: glob({ base: './src/content/daily', pattern: '**/*.{md,mdx}' }),
-	schema: z.object({
-		pubDate: z
-			.string()
-			.or(z.date())
-			.transform((val) => new Date(val)),
-		images: z.array(z.string()).optional(),
-	}),
-});
 
-export const collections = { blog, daily };
+export const collections = { blog };

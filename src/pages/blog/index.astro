@@ -7,7 +7,11 @@ import config from '../../config.js';
 
 const allPosts = (await getCollection("blog"))
     .filter((post) => post.data.published)
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+    .sort((a, b) => {
+        const dateDiff = b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+        if (dateDiff !== 0) return dateDiff;
+        return a.data.title.localeCompare(b.data.title, 'zh-CN', { numeric: true });
+    });
 ---
 
 <BaseLayout pageTitle="Blogs">
@@ -15,14 +19,19 @@ const allPosts = (await getCollection("blog"))
     <h1 class="text-3xl font-bold text-neutral-800 tracking-wide mb-10 border-b border-neutral-200/50 pb-4 pt-10">
       Blogs
     </h1>
-    <ul class="list-none p-0 flex flex-col justify-start">
+    <ul class="list-none p-0 flex flex-col gap-1">
         {
             allPosts.map((post) => (
-                    <li class="flex items-center">
-                        <FormattedDate class="flex-none italic text-neutral-500" date={post.data.pubDate}/>
-                        <span>&nbsp;-&nbsp;</span>
-                        <Link href=`/blog/${post.id}/`>{post.data.title}</Link>
-                    </li>
+                <li class="flex items-baseline gap-2">
+                    <time
+                        class="flex-none font-mono italic text-neutral-500 text-[14px]"
+                        datetime={post.data.pubDate.toISOString()}
+                    >
+                        {post.data.pubDate.getFullYear()}/{String(post.data.pubDate.getMonth() + 1).padStart(2, '0')}/{String(post.data.pubDate.getDate()).padStart(2, '0')}
+                    </time>
+                    <span class="text-neutral-400 flex-none">-</span>
+                    <Link href=`/blog/${post.id}/`>{post.data.title}</Link>
+                </li>
             ))
         }
     </ul>

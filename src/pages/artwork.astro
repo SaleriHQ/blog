@@ -75,7 +75,7 @@ images.sort((a, b) => b.date.getTime() - a.date.getTime());
               image.alt.substring(0, image.alt.lastIndexOf(".")) || image.alt;
             return (
               <DailyCard pubDate={image.date} images={[image.src]}>
-                <p class="text-neutral-800 font-light">{displayName}</p>
+                {/* <p class="text-neutral-800 font-light">{displayName}</p> */}
               </DailyCard>
             );
           })

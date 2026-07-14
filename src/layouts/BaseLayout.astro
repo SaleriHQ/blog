@@ -23,7 +23,11 @@ const { pageTitle } = Astro.props;
     </main>
 
     <!-- 全局点击图片放大 Lightbox 模态框 -->
-    <div id="lightbox" class="lightbox" style="display: none; opacity: 0; pointer-events: none;">
+    <div
+      id="lightbox"
+      class="lightbox"
+      style="display: none; opacity: 0; pointer-events: none;"
+    >
       <span id="lightbox-close" class="lightbox-close">&times;</span>
       <img id="lightbox-img" src="" alt="preview" />
     </div>
@@ -83,7 +87,9 @@ const { pageTitle } = Astro.props;
   // 关闭动画（含竞态保护：记录关闭时的 src，若已被新图替换则不清空）
   function closeLightbox() {
     const lightbox = document.getElementById("lightbox");
-    const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
+    const lightboxImg = document.getElementById(
+      "lightbox-img",
+    ) as HTMLImageElement;
     if (lightboxImg && lightbox) {
       const srcAtClose = lightboxImg.src; // 记录关闭时的 src
       lightboxImg.style.transform = "scale(0.95)";
@@ -112,7 +118,9 @@ const { pageTitle } = Astro.props;
       // 打开 Lightbox
       const src = target.getAttribute("data-src");
       const lightbox = document.getElementById("lightbox");
-      const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
+      const lightboxImg = document.getElementById(
+        "lightbox-img",
+      ) as HTMLImageElement;
 
       if (src && lightboxImg && lightbox) {
         lightboxImg.src = src;
